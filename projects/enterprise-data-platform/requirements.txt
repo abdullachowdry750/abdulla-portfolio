@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic
+pandas
+sqlalchemy
+psycopg[binary]
+clickhouse-connect
+httpx
+python-dotenv
+pytest

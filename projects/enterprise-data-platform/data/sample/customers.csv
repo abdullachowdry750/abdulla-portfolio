@@ -1,0 +1,6 @@
+customer_id,customer_name,email,city,signup_date
+1,Aarav Sharma,aarav@example.com,Bengaluru,2026-01-10
+2,Sara Khan,sara@example.com,Mumbai,2026-01-12
+3,Rahul Verma,rahul@example.com,Delhi,2026-01-15
+4,Aisha Ahmed,aisha@example.com,Hyderabad,2026-01-18
+5,Daniel Thomas,daniel@example.com,Chennai,2026-01-20
