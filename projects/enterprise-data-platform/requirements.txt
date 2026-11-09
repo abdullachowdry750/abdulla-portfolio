@@ -4,7 +4,7 @@ pydantic
 pandas
 sqlalchemy
 psycopg[binary]
-clickhouse-connect
+clickhouse-connect==1.12.0
 httpx
 python-dotenv
 pytest

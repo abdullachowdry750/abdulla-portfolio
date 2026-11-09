@@ -1,7 +1,28 @@
+import sys
+import os
+from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from schemas import Profile, Project, ProjectsResponse, HealthResponse
+
+from backend.schemas import (
+    Profile,
+    Project,
+    ProjectsResponse,
+    HealthResponse,
+)
+
+# Connect the portfolio backend to the Enterprise Data Platform.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+DATA_PLATFORM_ROOT = (
+    PROJECT_ROOT / "projects" / "enterprise-data-platform"
+)
+
+sys.path.insert(0, str(DATA_PLATFORM_ROOT))
+
+from src.analytics.customer_analytics import get_customer_analytics
+
 
 app = FastAPI(
     title="Abdulla Engineering API",
@@ -9,15 +30,23 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Frontend communication
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ORIGINS",
+        "http://localhost:3000"
+    ).split(",")
+    if origin.strip()
+]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET"],
+    allow_headers=["Content-Type", "Authorization"],
 )
-
 
 @app.get("/")
 def home():
@@ -83,3 +112,15 @@ def get_projects():
             }
         ]
     }
+
+
+@app.get("/api/analytics/customers")
+def customer_analytics():
+    try:
+        return get_customer_analytics()
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="Customer analytics are temporarily unavailable"
+        ) from exc

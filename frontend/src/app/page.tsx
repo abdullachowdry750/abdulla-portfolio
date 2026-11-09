@@ -1,4 +1,10 @@
-import { getProfile, getProjects } from "@/lib/api";
+import {
+  getProfile,
+  getProjects,
+  getCustomerAnalytics,
+} from "@/lib/api";
+import Link from "next/link";
+
 const skills = [
   "Python", "FastAPI", "Apache Airflow", "PostgreSQL",
   "ClickHouse", "Kafka", "GCP", "Docker",
@@ -8,20 +14,37 @@ const skills = [
 export default async function Home() {
   const profile = await getProfile();
   const projectData = await getProjects();
+  const analytics = await getCustomerAnalytics();
+
+  const formatDate = (value: string | null) =>
+  value
+    ? new Date(`${value}T00:00:00Z`).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        timeZone: "UTC",
+      })
+    : "—";
+
+  const maxCityCount = Math.max(
+    ...analytics.city_distribution.map((item) => item.customer_count),
+    1
+  );
 
   const projects = projectData.projects;
   return (
     <main className="min-h-screen bg-[#090d12] text-white">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-7">
         <a href="#" className="text-xl font-bold tracking-tight">
-          ABDULLA<span className="text-emerald-400">.</span>
+          CHOWDRY MOHAMMED ABDULLA<span className="text-emerald-400">.</span>
         </a>
-        <div className="hidden gap-8 text-sm text-gray-400 md:flex">
-          <a href="#about" className="hover:text-white">About</a>
-          <a href="#expertise" className="hover:text-white">Expertise</a>
-          <a href="#projects" className="hover:text-white">Projects</a>
-          <a href="#experience" className="hover:text-white">Experience</a>
-        </div>
+          <div className="hidden gap-8 text-sm text-gray-400 md:flex">
+            <a href="#about" className="hover:text-white">About</a>
+            <a href="#expertise" className="hover:text-white">Expertise</a>
+            <a href="#projects" className="hover:text-white">Projects</a>
+            <a href="#analytics" className="hover:text-white">Analytics</a>
+            <a href="#experience" className="hover:text-white">Experience</a>
+          </div>
         <a
           href="mailto:abdullachowdry@gmail.com"
           className="rounded-full border border-gray-700 px-5 py-2 text-sm hover:border-emerald-400"
@@ -109,11 +132,11 @@ export default async function Home() {
           <h2 className="mt-6 text-3xl font-semibold md:text-4xl">
             Engineering projects
           </h2>
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <article
                 key={project.id}
-                className="rounded-2xl border border-gray-800 bg-[#101720] p-8 transition hover:border-emerald-400/50"
+                className="flex h-full flex-col rounded-2xl border border-gray-800 bg-[#101720] p-7 transition duration-300 hover:-translate-y-1 hover:border-emerald-400/50"
               >
                 <p className="text-sm text-emerald-400">
                   {String(project.id).padStart(2, "0")} / {project.category}
@@ -137,19 +160,174 @@ export default async function Home() {
                     </span>
                   ))}
                 </div>
+                <div className="mt-auto pt-8">
+                  <p className="text-sm text-gray-500">
+                    {project.status}
+                  </p>
 
-                <p className="mt-8 text-sm text-gray-500">
-                  {project.status}
-                </p>
+                  {project.id === 1 && (
+                    <Link
+                      href="/projects/enterprise-data-platform"
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
+                    >
+                      Explore case study <span>↗</span>
+                    </Link>
+                  )}
+                </div>
               </article>
             ))}
           </div>
         </div>
       </section>
 
+      <section id="analytics" className="border-t border-gray-800">
+        <div className="mx-auto max-w-6xl px-6 py-24">
+          <p className="text-sm tracking-widest text-emerald-400">
+            04 / LIVE DATA PLATFORM
+          </p>
+
+          <div className="mt-6 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div>
+              <h2 className="text-3xl font-semibold md:text-4xl">
+                Customer Analytics
+              </h2>
+              <p className="mt-3 text-gray-400">
+                Analytical insights powered by PostgreSQL, ClickHouse and FastAPI.
+              </p>
+            </div>
+
+            <span className="w-fit rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs text-emerald-400">
+              ● Analytics API Connected
+            </span>
+          </div>
+
+          {/* Summary metrics */}
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                label: "Total customers",
+                value: analytics.summary.total_customers,
+              },
+              {
+                label: "Unique cities",
+                value: analytics.summary.unique_cities,
+              },
+              {
+                label: "First signup",
+                value: formatDate(analytics.summary.first_signup),
+              },
+              {
+                label: "Latest signup",
+                value: formatDate(analytics.summary.latest_signup),
+              },
+            ].map((metric) => (
+              <div
+                key={metric.label}
+                className="rounded-2xl border border-gray-800 bg-[#101720] p-6"
+              >
+                <p className="text-sm text-gray-500">{metric.label}</p>
+                <p className="mt-4 text-2xl font-semibold text-white">
+                  {metric.value}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* City distribution */}
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <div className="rounded-2xl border border-gray-800 bg-[#101720] p-8">
+              <h3 className="text-xl font-semibold">
+                Customers by city
+              </h3>
+
+              <p className="mt-2 text-sm text-gray-500">
+                Geographic distribution of customers
+              </p>
+
+              <div className="mt-8 space-y-6">
+                {analytics.city_distribution.map((item) => (
+                  <div key={item.city}>
+                    <div className="mb-2 flex justify-between text-sm">
+                      <span className="text-gray-300">{item.city}</span>
+                        <span className="text-gray-400">
+                          {item.customer_count} (
+                          {Math.round(
+                            (item.customer_count /
+                              Math.max(analytics.summary.total_customers, 1)) * 100
+                          )}%)
+                        </span>
+                    </div>
+
+                    <div className="h-2 overflow-hidden rounded-full bg-gray-800">
+                      <div
+                        className="h-full rounded-full bg-emerald-400"
+                        style={{
+                          width: `${(item.customer_count / Math.max(analytics.summary.total_customers, 1)) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Monthly signups */}
+            <div className="rounded-2xl border border-gray-800 bg-[#101720] p-8">
+              <h3 className="text-xl font-semibold">
+                Monthly signups
+              </h3>
+
+              <p className="mt-2 text-sm text-gray-500">
+                Customer acquisition over time
+              </p>
+
+              <div className="mt-8 space-y-6">
+                {analytics.monthly_signups.map((item) => (
+                  <div key={item.signup_month}>
+                    <div className="mb-2 flex justify-between text-sm">
+                      <span className="text-gray-300">
+                        {new Date(item.signup_month).toLocaleDateString(
+                          "en-US",
+                          { month: "short", year: "numeric", timeZone: "UTC" }
+                        )}
+                      </span>
+
+                      <span className="text-gray-400">
+                        {item.new_customers} customers
+                      </span>
+                    </div>
+
+                    <div className="h-2 overflow-hidden rounded-full bg-gray-800">
+                      <div
+                        className="h-full rounded-full bg-emerald-400"
+                        style={{
+                          width: `${
+                            (item.new_customers /
+                              Math.max(
+                                ...analytics.monthly_signups.map(
+                                  (entry) => entry.new_customers
+                                ),
+                                1
+                              )) * 100
+                          }%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-6 text-xs text-gray-600">
+            Demonstration dataset · Analytics queried from ClickHouse through FastAPI.
+          </p>
+        </div>
+      </section>
+
       <section id="experience" className="border-t border-gray-800">
         <div className="mx-auto max-w-6xl px-6 py-24">
-          <p className="text-sm tracking-widest text-emerald-400">04 / EXPERIENCE</p>
+          <p className="text-sm tracking-widest text-emerald-400">05 / EXPERIENCE</p>
           <h2 className="mt-6 text-3xl font-semibold">Professional journey</h2>
           <div className="mt-10 border-l border-gray-700 pl-6">
             <p className="text-xl font-semibold">Data Science Lead</p>
@@ -172,7 +350,7 @@ export default async function Home() {
       <footer className="border-t border-gray-800">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-6 px-6 py-10 md:flex-row">
           <div>
-            <p className="font-semibold">ABDULLA.</p>
+            <p className="font-semibold">CHOWDRY MOHAMMED ABDULLA</p>
             <p className="mt-2 text-sm text-gray-500">
               Building intelligent systems at scale.
             </p>

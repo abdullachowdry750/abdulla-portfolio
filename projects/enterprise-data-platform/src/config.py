@@ -23,6 +23,8 @@ class Settings:
     CLICKHOUSE_HOST = os.getenv("CLICKHOUSE_HOST", "localhost")
     CLICKHOUSE_PORT = int(os.getenv("CLICKHOUSE_PORT", "8123"))
     CLICKHOUSE_DATABASE = os.getenv("CLICKHOUSE_DATABASE", "analytics")
+    CLICKHOUSE_USER = os.getenv("CLICKHOUSE_USER", "analytics_user")
+    CLICKHOUSE_PASSWORD = os.getenv("CLICKHOUSE_PASSWORD", "")
 
 
 settings = Settings()
