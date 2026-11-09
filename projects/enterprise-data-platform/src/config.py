@@ -14,7 +14,15 @@ class Settings:
     APP_HOST = os.getenv("APP_HOST", "127.0.0.1")
     APP_PORT = int(os.getenv("APP_PORT", "8001"))
 
-    POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+    INSTANCE_CONNECTION_NAME = os.getenv(
+    "INSTANCE_CONNECTION_NAME", ""
+    ).strip()
+
+    POSTGRES_HOST = (
+        f"/cloudsql/{INSTANCE_CONNECTION_NAME}"
+        if INSTANCE_CONNECTION_NAME
+        else os.getenv("POSTGRES_HOST", "localhost")
+    )
     POSTGRES_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
     POSTGRES_DB = os.getenv("POSTGRES_DB", "enterprise_data")
     POSTGRES_USER = os.getenv("POSTGRES_USER", "platform_user")
@@ -25,6 +33,11 @@ class Settings:
     CLICKHOUSE_DATABASE = os.getenv("CLICKHOUSE_DATABASE", "analytics")
     CLICKHOUSE_USER = os.getenv("CLICKHOUSE_USER", "analytics_user")
     CLICKHOUSE_PASSWORD = os.getenv("CLICKHOUSE_PASSWORD", "")
+
+    ANALYTICS_BACKEND = os.getenv(
+    "ANALYTICS_BACKEND",
+    "clickhouse"
+).strip().lower()
 
 
 settings = Settings()

@@ -1,0 +1,26 @@
+{
+  "hosting": {
+    "public": "firebase-hosting",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api{,/**}",
+        "run": {
+          "serviceId": "portfolio-api",
+          "region": "asia-south1"
+        }
+      },
+      {
+        "source": "**",
+        "run": {
+          "serviceId": "portfolio-frontend",
+          "region": "asia-south1"
+        }
+      }
+    ]
+  }
+}

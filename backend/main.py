@@ -21,7 +21,7 @@ DATA_PLATFORM_ROOT = (
 
 sys.path.insert(0, str(DATA_PLATFORM_ROOT))
 
-from src.analytics.customer_analytics import get_customer_analytics
+from src.config import settings
 
 
 app = FastAPI(
@@ -117,7 +117,24 @@ def get_projects():
 @app.get("/api/analytics/customers")
 def customer_analytics():
     try:
+        if settings.ANALYTICS_BACKEND == "postgres":
+            from src.analytics.postgres_customer_analytics import (
+                get_customer_analytics
+            )
+        elif settings.ANALYTICS_BACKEND == "clickhouse":
+            from src.analytics.customer_analytics import (
+                get_customer_analytics
+            )
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail="Unsupported analytics backend configuration"
+            )
+
         return get_customer_analytics()
+
+    except HTTPException:
+        raise
 
     except Exception as exc:
         raise HTTPException(
