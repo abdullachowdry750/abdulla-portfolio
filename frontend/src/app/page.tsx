@@ -4,6 +4,7 @@ import {
   getCustomerAnalytics,
 } from "@/lib/api";
 import Link from "next/link";
+import Image from "next/image";
 
 const skills = [
   "Python", "FastAPI", "Apache Airflow", "PostgreSQL",
@@ -35,8 +36,17 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-[#090d12] text-white">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-7">
-        <a href="#" className="text-xl font-bold tracking-tight">
-          CHOWDRY MOHAMMED ABDULLA<span className="text-emerald-400">.</span>
+        <a href="/" className="flex items-center gap-3">
+          <Image
+            src="/logo.svg"
+            alt=""
+            width={38}
+            height={38}
+            priority
+          />
+          <span className="text-lg font-bold tracking-tight">
+            ABDULLA CHOWDRY<span className="text-emerald-400">.</span>
+          </span>
         </a>
           <div className="hidden gap-8 text-sm text-gray-400 md:flex">
             <a href="#about" className="hover:text-white">About</a>
@@ -44,6 +54,7 @@ export default async function Home() {
             <a href="#projects" className="hover:text-white">Projects</a>
             <a href="#analytics" className="hover:text-white">Analytics</a>
             <a href="#experience" className="hover:text-white">Experience</a>
+            <a href="#resume" className="hover:text-white">Resume</a>
           </div>
         <a
           href="mailto:abdullachowdry@gmail.com"
@@ -53,48 +64,107 @@ export default async function Home() {
         </a>
       </nav>
 
-      <section className="mx-auto flex min-h-[650px] max-w-6xl flex-col justify-center px-6 py-24">
-        <p className="mb-6 text-sm font-medium tracking-[0.25em] text-emerald-400">
-          AI ENGINEERING · DATA PLATFORMS · CLOUD
-        </p>
+  <section className="mx-auto grid min-h-[650px] max-w-6xl grid-cols-1 items-center gap-14 px-6 py-20 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.8fr)] lg:gap-16">
 
-        <h1 className="max-w-4xl text-5xl font-semibold leading-tight tracking-tight md:text-7xl">
-          Engineering intelligent systems
-          <span className="text-emerald-400"> at scale.</span>
-        </h1>
+    {/* Introduction */}
+    <div className="max-w-3xl">
+      <p className="mb-6 text-sm font-medium tracking-[0.25em] text-emerald-400">
+        AI ENGINEERING · DATA PLATFORMS · CLOUD
+      </p>
 
-        <p className="mt-8 max-w-2xl text-lg leading-8 text-gray-400">
-          I'm Abdulla Chowdry, an AI and Data Engineer focused on
-          designing scalable data platforms, production-ready AI
-          systems and reliable engineering infrastructure.
-        </p>
+      <h1 className="text-5xl font-semibold leading-tight tracking-tight md:text-6xl">
+        Engineering intelligent systems
+        <span className="text-emerald-400"> at scale.</span>
+      </h1>
 
-        <div className="mt-10 flex flex-wrap gap-4">
-          <a href="#projects"
-            className="rounded-full bg-emerald-400 px-7 py-3 font-medium text-black hover:bg-emerald-300">
-            Explore my work ↗
-          </a>
-          <a href="#about"
-            className="rounded-full border border-gray-700 px-7 py-3 hover:border-white">
-            More about me
-          </a>
+      <p className="mt-8 max-w-2xl text-lg leading-8 text-gray-400">
+        I'm Abdulla Chowdry, an AI and Data Engineer focused on
+        designing scalable data platforms, production-ready AI
+        systems and reliable engineering infrastructure.
+      </p>
+
+      <p className="mt-4 text-sm text-gray-500">
+        Data Science Lead · Impact Big Data Analytics · Bengaluru, India
+      </p>
+      <p className="mt-2 text-sm text-gray-500">
+        Open to opportunities in India and internationally.
+      </p>
+
+      <div className="mt-10 flex flex-wrap gap-4">
+        <a href="#projects"
+          className="rounded-full bg-emerald-400 px-7 py-3 font-medium text-black hover:bg-emerald-300">
+          Explore my work ↗
+        </a>
+
+        <a href="#about"
+          className="rounded-full border border-gray-700 px-7 py-3 hover:border-white">
+          More about me
+        </a>
+
+        <a
+          href="/resume.pdf"
+          download="Abdulla_Chowdry_Resume.pdf"
+          className="rounded-full border border-emerald-400/40 px-7 py-3 text-emerald-400 hover:bg-emerald-400/10"
+        >
+          Download Resume ↓
+        </a>
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-6 text-sm text-gray-400">
+        <a
+          href="https://www.linkedin.com/in/chowdry-abdulla-178484156/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition hover:text-emerald-400"
+        >
+          LinkedIn ↗
+        </a>
+        <a
+          href="https://github.com/abdullachowdry750"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition hover:text-emerald-400"
+        >
+          GitHub ↗
+        </a>
+        <a
+          href="mailto:abdullachowdry@gmail.com"
+          className="transition hover:text-emerald-400"
+        >
+          Email ↗
+        </a>
+      </div>
+
+      <div className="mt-16 grid max-w-2xl grid-cols-2 gap-8 border-t border-gray-800 pt-8 md:grid-cols-3">
+        <div>
+          <p className="text-3xl font-semibold">5+</p>
+          <p className="mt-2 text-sm text-gray-500">Years in engineering</p>
         </div>
-
-        <div className="mt-20 grid max-w-2xl grid-cols-2 gap-8 border-t border-gray-800 pt-8 md:grid-cols-3">
-          <div>
-            <p className="text-3xl font-semibold">5+</p>
-            <p className="mt-2 text-sm text-gray-500">Years in engineering</p>
-          </div>
-          <div>
-            <p className="text-3xl font-semibold">AI + Data</p>
-            <p className="mt-2 text-sm text-gray-500">Core specialization</p>
-          </div>
-          <div>
-            <p className="text-3xl font-semibold">GCP</p>
-            <p className="mt-2 text-sm text-gray-500">Cloud ecosystem</p>
-          </div>
+        <div>
+          <p className="text-3xl font-semibold">AI + Data</p>
+          <p className="mt-2 text-sm text-gray-500">Core specialization</p>
         </div>
-      </section>
+        <div>
+          <p className="text-3xl font-semibold">GCP</p>
+          <p className="mt-2 text-sm text-gray-500">Cloud ecosystem</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Profile photograph */}
+    <div className="relative mx-auto w-full max-w-[460px] lg:max-w-none">
+      <Image
+        src="/images/profile.webp"
+        alt="Abdulla Chowdry - AI and Data Engineer"
+        width={900}
+        height={900}
+        priority
+        sizes="(max-width: 1024px) 85vw, 460px"
+        className="aspect-[4/5] w-full rounded-2xl object-cover object-[center_28%]"
+      />
+    </div>
+
+  </section>
 
       <section id="about" className="border-t border-gray-800">
         <div className="mx-auto max-w-6xl px-6 py-24">
@@ -343,6 +413,52 @@ export default async function Home() {
             <p className="text-xl font-semibold">Data Scientist</p>
             <p className="mt-2 text-gray-400">Impact Big Data Analytics</p>
             <p className="mt-2 text-sm text-gray-500">February 2021 — August 2022</p>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="resume" className="border-t border-gray-800">
+        <div className="mx-auto max-w-6xl px-6 py-24">
+          <p className="text-sm tracking-widest text-emerald-400">
+            06 / RESUME
+          </p>
+
+          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
+            <div>
+              <h2 className="max-w-2xl text-3xl font-semibold md:text-4xl">
+                A closer look at my engineering journey.
+              </h2>
+
+              <p className="mt-6 max-w-2xl leading-8 text-gray-400">
+                Explore my professional experience across AI engineering,
+                agentic AI, enterprise data platforms, machine learning
+                systems and cloud architecture.
+              </p>
+
+              <p className="mt-5 text-sm text-gray-500">
+                Abdulla Chowdry · AI + Data Engineer · 5+ Years Experience
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-4 lg:flex-col">
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-gray-700 px-7 py-3 text-center text-white transition hover:border-emerald-400"
+              >
+                View Resume ↗
+              </a>
+
+              <a
+                href="/resume.pdf"
+                download="Abdulla_Chowdry_Resume.pdf"
+                className="rounded-full bg-emerald-400 px-7 py-3 text-center font-medium text-black transition hover:bg-emerald-300"
+              >
+                Download PDF ↓
+              </a>
+            </div>
           </div>
         </div>
       </section>

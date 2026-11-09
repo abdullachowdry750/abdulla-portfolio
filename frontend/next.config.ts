@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone",
+
   cacheComponents: true,
   partialPrefetching: true,
+  devIndicators: false,
+
   turbopack: {
     rules: {
       "*.css": {
@@ -15,3 +18,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
